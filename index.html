@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>迷茫时候看看古人是怎么找到适合自己的道的？｜诸子百家心性镜像测试</title>
-  <meta name="description" content="十二道红尘情境问心，照见你与儒、道、法、墨、兵、纵横诸子百家的契合占比，从两千年前先贤的迷茫与寻道中照见当下破局之道。">
+  <meta name="description" content="十八道红尘情境问心，融合先秦原典映照，照见你与儒、道、法、墨、兵、纵横诸子百家的契合占比，并给出分场景迷茫破局指引。">
 
   <!-- 非阻塞异步加载思源宋体与马善政楷书，无网环境无缝降级至本地宋体栈 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,7 @@
 
         <p class="hero-subtitle">
           春秋战国亦是一个礼崩乐坏、前路莫测的时代。孔子的忧思、庄子的逍遥、韩非的冷峻、墨子的奔走、孙膑的隐忍与苏秦的纵横，本质上都是先贤面对人生迷茫开出的不同解方。<br>
-          十二道明确的情境抉择，为你算出最贴近本心的百家道途占比。
+          十八道明确的情境抉择与古籍映照，为你算出最贴近本心的百家道途占比与落地破局指引。
         </p>
 
         <div class="hero-schools-row" id="hero-schools-row" aria-label="六大流派快览">
@@ -54,16 +54,16 @@
       </main>
 
       <footer class="hero-footer-note">
-        十二道红尘情境问心 · 无模棱两可选项 · 测出你的六家道途占比
+        十八道红尘情境问心 · 先秦原典映照 · 测出你的六家道途占比与破局指引
       </footer>
     </section>
 
-    <!-- ==================== 2. 12 题问心卷 ==================== -->
+    <!-- ==================== 2. 18 题问心卷 ==================== -->
     <section id="view-quiz" class="view-panel" aria-label="心理测试答题区">
       <div class="quiz-wrapper">
         <div class="quiz-topbar">
           <button type="button" id="btn-home" class="btn btn-ghost">← 返回卷首</button>
-          <span id="quiz-progress-text" class="quiz-progress-text">第 壹 / 拾贰 问</span>
+          <span id="quiz-progress-text" class="quiz-progress-text">第 壹 / 拾捌 问</span>
         </div>
 
         <div class="ink-progress-track" aria-hidden="true">
@@ -73,6 +73,7 @@
         <article class="quiz-card">
           <img class="quiz-card-brush ink-blend" src="assets/images/ink-divider-brush.svg" alt="" aria-hidden="true">
           <div id="quiz-chapter" class="quiz-chapter">第一问</div>
+          <p id="quiz-epigraph" class="quiz-epigraph"></p>
           <h2 id="quiz-scenario" class="quiz-scenario"></h2>
           <div id="quiz-options" class="options-list" role="radiogroup" aria-label="情境选项"></div>
 
@@ -135,10 +136,10 @@
           </div>
         </article>
 
-        <!-- 古人也曾迷茫 · 历史镜像卡 -->
+        <!-- 古人也曾迷茫 · 历史镜像与原典精读卡 -->
         <article class="ink-card">
           <div class="section-heading-row">
-            <h3 class="section-heading">古人也曾迷茫 · 历史镜像</h3>
+            <h3 class="section-heading">古人也曾迷茫 · 历史镜像与原典精读</h3>
             <span id="res-story-rep" class="section-subheading"></span>
           </div>
           <h4 id="res-story-title" class="story-title"></h4>
@@ -148,13 +149,37 @@
             <div id="res-quote-author" class="quote-author"></div>
             <p id="res-quote-modern" class="quote-modern"></p>
           </blockquote>
+
+          <div class="classics-block">
+            <div class="subsection-title-row">
+              <h4 class="subsection-title">本命与调和原典摘录</h4>
+              <span class="subsection-hint">主辅互参，照见古籍深意</span>
+            </div>
+            <div id="res-classics-list" class="classics-grid"></div>
+          </div>
+
+          <div class="books-section">
+            <div class="subsection-title-row">
+              <h4 class="subsection-title">迷茫时建议翻开的枕边原典</h4>
+            </div>
+            <div id="res-books-list" class="books-row"></div>
+          </div>
         </article>
 
-        <!-- 破局导向三策卡 -->
+        <!-- 分场景破局指引卡 -->
         <article class="ink-card">
           <div class="section-heading-row">
-            <h3 class="section-heading">迷茫时的破局导向</h3>
-            <span class="section-subheading">以古为镜，知长短而安当下</span>
+            <h3 class="section-heading">分场景迷茫破局指引</h3>
+            <span id="res-scene-subtitle" class="section-subheading">把先秦思维放回当下现实难题</span>
+          </div>
+          <div id="res-scene-guides" class="scene-guides-grid"></div>
+        </article>
+
+        <!-- 迷茫破局行动蓝图卡 -->
+        <article class="ink-card">
+          <div class="section-heading-row">
+            <h3 class="section-heading">寻道破局行动蓝图</h3>
+            <span class="section-subheading">知天赋边界，定今日至一月之步履</span>
           </div>
           <div class="advice-grid">
             <div class="advice-box">
@@ -170,9 +195,19 @@
               <p id="res-shadow"></p>
             </div>
             <div class="advice-box advice-action">
-              <h4 class="advice-label"><span class="advice-dot"></span>当下立刻能做的一件小事</h4>
+              <h4 class="advice-label"><span class="advice-dot"></span>此刻破冰切口</h4>
               <p id="res-action"></p>
             </div>
+          </div>
+
+          <div class="checklist-box">
+            <h4 class="subsection-title">重大抉择前，先问自己的三件事</h4>
+            <ol id="res-decision-checklist" class="checklist-list"></ol>
+          </div>
+
+          <div class="roadmap-section">
+            <h4 class="subsection-title">三阶落地行动路线图</h4>
+            <div id="res-roadmap" class="roadmap-timeline"></div>
           </div>
         </article>
 

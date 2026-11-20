@@ -4,7 +4,10 @@
 (function (root) {
   'use strict';
 
-  var CN_NUMERALS = ['壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖', '拾', '拾壹', '拾贰'];
+  var CN_NUMERALS = [
+    '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖', '拾',
+    '拾壹', '拾贰', '拾叁', '拾肆', '拾伍', '拾陆', '拾柒', '拾捌'
+  ];
 
   document.addEventListener('DOMContentLoaded', function () {
     var DaoTest = root.DaoTest || {};
@@ -47,6 +50,7 @@
       quizProgressText: document.getElementById('quiz-progress-text'),
       quizProgressFill: document.getElementById('quiz-progress-fill'),
       quizChapter: document.getElementById('quiz-chapter'),
+      quizEpigraph: document.getElementById('quiz-epigraph'),
       quizScenario: document.getElementById('quiz-scenario'),
       quizOptions: document.getElementById('quiz-options'),
 
@@ -65,10 +69,16 @@
       resQuote: document.getElementById('res-quote'),
       resQuoteAuthor: document.getElementById('res-quote-author'),
       resQuoteModern: document.getElementById('res-quote-modern'),
+      resClassicsList: document.getElementById('res-classics-list'),
+      resBooksList: document.getElementById('res-books-list'),
+      resSceneSubtitle: document.getElementById('res-scene-subtitle'),
+      resSceneGuides: document.getElementById('res-scene-guides'),
       resStrength: document.getElementById('res-strength'),
       resBalance: document.getElementById('res-balance'),
       resShadow: document.getElementById('res-shadow'),
       resAction: document.getElementById('res-action'),
+      resDecisionChecklist: document.getElementById('res-decision-checklist'),
+      resRoadmap: document.getElementById('res-roadmap'),
 
       btnGenPoster: document.getElementById('btn-gen-poster'),
       btnCopyResult: document.getElementById('btn-copy-result'),
@@ -126,6 +136,10 @@
       dom.quizProgressText.textContent = '第 ' + (CN_NUMERALS[idx] || idx + 1) + ' / ' + CN_NUMERALS[total - 1] + ' 问';
       dom.quizProgressFill.style.width = (((idx + 1) / total) * 100).toFixed(2) + '%';
       dom.quizChapter.textContent = q.chapter;
+      if (dom.quizEpigraph) {
+        dom.quizEpigraph.textContent = q.epigraph || '';
+        dom.quizEpigraph.style.display = q.epigraph ? 'block' : 'none';
+      }
       dom.quizScenario.textContent = q.scenario;
 
       dom.btnPrev.style.visibility = idx === 0 ? 'hidden' : 'visible';
@@ -312,7 +326,7 @@
         dom.resBarsContainer.appendChild(row);
       });
 
-      // 古人也曾迷茫 · 历史镜像
+      // 古人也曾迷茫 · 历史镜像与本命原典精读
       dom.resStoryRep.textContent = top1School.name + ' · ' + top1School.representatives;
       dom.resStoryTitle.textContent = top1School.ancientStoryTitle;
       dom.resStoryBody.textContent = top1School.ancientStory;
@@ -320,11 +334,113 @@
       dom.resQuoteAuthor.textContent = '—— ' + top1School.quoteAuthor;
       dom.resQuoteModern.textContent = '现代破局解意：' + top1School.quoteModern;
 
-      // 破局导向三策
+      // 本命与调和原典摘录（纯粹态展示主道 4 则；合参态展示主道 3 则 + 辅道 1 则）
+      if (dom.resClassicsList) {
+        var excerptItems = [];
+        var primaryList = Array.isArray(top1School.classicExcerpts) ? top1School.classicExcerpts : [];
+        if (result.isPure || !top2School.classicExcerpts || top2School.classicExcerpts.length === 0) {
+          primaryList.slice(0, 4).forEach(function (ex) {
+            excerptItems.push({ prefix: top1School.name + ' · ', item: ex });
+          });
+        } else {
+          primaryList.slice(0, 3).forEach(function (ex) {
+            excerptItems.push({ prefix: '主道 · ', item: ex });
+          });
+          excerptItems.push({ prefix: '辅道调和(' + top2School.name + ') · ', item: top2School.classicExcerpts[0] });
+        }
+
+        dom.resClassicsList.innerHTML = excerptItems
+          .map(function (entry) {
+            var ex = entry.item;
+            return (
+              '<div class="classic-item">' +
+                '<div class="classic-item-head">' +
+                  '<span class="classic-tag">' + escapeHtml(entry.prefix + ex.tag) + '</span>' +
+                  '<span class="classic-source">' + escapeHtml(ex.source) + '</span>' +
+                '</div>' +
+                '<p class="classic-text">“' + escapeHtml(ex.text) + '”</p>' +
+                '<p class="classic-note">' + escapeHtml(ex.note) + '</p>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
+
+      // 枕边推荐典籍书单（补齐至 3 本呈现均衡三列）
+      if (dom.resBooksList) {
+        var books = (top1School.recommendedBooks || []).slice(0, 3);
+        if (books.length < 3 && top2School.recommendedBooks && top2School.recommendedBooks.length > 0) {
+          books.push(top2School.recommendedBooks[0]);
+        }
+        dom.resBooksList.innerHTML = books
+          .map(function (bk) {
+            return (
+              '<div class="book-card">' +
+                '<div class="book-title">' + escapeHtml(bk.title) + '</div>' +
+                '<div class="book-chapter">优先篇目：' + escapeHtml(bk.chapter) + '</div>' +
+                '<p class="book-reason">' + escapeHtml(bk.reason) + '</p>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
+
+      // 分场景迷茫破局指引
+      if (dom.resSceneSubtitle) {
+        dom.resSceneSubtitle.textContent = result.isPure
+          ? '以' + top1School.name + '立骨，直面当下四重现实关口'
+          : '以' + top1School.name + '立骨 · 借' + top2School.name + '调和，照见当下破局路';
+      }
+      if (dom.resSceneGuides) {
+        var guides = top1School.sceneGuides || [];
+        dom.resSceneGuides.innerHTML = guides
+          .map(function (g) {
+            return (
+              '<div class="scene-card">' +
+                '<span class="scene-badge">' + escapeHtml(g.scene) + '</span>' +
+                '<h4 class="scene-title">' + escapeHtml(g.title) + '</h4>' +
+                '<p class="scene-guide">' + escapeHtml(g.guide) + '</p>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
+
+      // 寻道破局行动蓝图
       dom.resStrength.textContent = top1School.strength;
       dom.resBalance.textContent = insight.balanceAdvice;
       dom.resShadow.textContent = top1School.shadow;
       dom.resAction.textContent = top1School.actionNow;
+
+      // 重大抉择自检三问
+      if (dom.resDecisionChecklist) {
+        var checks = top1School.decisionChecklist || [];
+        dom.resDecisionChecklist.innerHTML = checks
+          .map(function (item) {
+            return '<li>' + escapeHtml(item) + '</li>';
+          })
+          .join('');
+      }
+
+      // 三阶落地行动路线图
+      if (dom.resRoadmap && top1School.roadmap) {
+        var rm = top1School.roadmap;
+        var steps = [
+          { tag: '一 · 今日破冰（24小时内）', text: rm.today, cls: 'step-today' },
+          { tag: '二 · 七日定心（本周锚点）', text: rm.week, cls: '' },
+          { tag: '三 · 一月成势（长期根基）', text: rm.month, cls: '' }
+        ];
+        dom.resRoadmap.innerHTML = steps
+          .map(function (st) {
+            return (
+              '<div class="roadmap-step ' + st.cls + '">' +
+                '<div class="roadmap-step-tag">' + escapeHtml(st.tag) + '</div>' +
+                '<p>' + escapeHtml(st.text) + '</p>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
     }
 
     function escapeHtml(str) {
@@ -362,6 +478,17 @@
       if (state.activeCodexTab === 'extra') {
         var extraHtml = '<div class="codex-extra-grid">';
         EXTRA_SCHOOLS.forEach(function (item) {
+          var extraQuotesHtml = (item.classicExcerpts || [])
+            .map(function (ex) {
+              return (
+                '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,242,235,0.65);border-radius:4px;font-size:13px;">' +
+                  '<div style="font-weight:600;color:var(--ink-heavy);">“' + escapeHtml(ex.text) + '” <span style="font-weight:400;color:var(--ink-light);">—— ' + escapeHtml(ex.source) + '</span></div>' +
+                  '<div style="color:var(--ink-mid);margin-top:3px;">' + escapeHtml(ex.note) + '</div>' +
+                '</div>'
+              );
+            })
+            .join('');
+
           extraHtml +=
             '<div class="codex-extra-card">' +
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
@@ -374,12 +501,40 @@
                 '“' + escapeHtml(item.quote) + '” <span style="color:var(--ink-light);">—— ' + escapeHtml(item.quoteAuthor) + '</span>' +
               '</div>' +
               '<p style="margin:0;font-size:13.5px;color:var(--ink-heavy);"><strong>现代迷茫解药：</strong>' + escapeHtml(item.modernRemedy) + '</p>' +
+              extraQuotesHtml +
             '</div>';
         });
         extraHtml += '</div>';
         dom.codexContent.innerHTML = extraHtml;
       } else {
         var s = SCHOOLS[state.activeCodexTab] || SCHOOLS.ru;
+        var classicsHtml = (s.classicExcerpts || [])
+          .map(function (ex) {
+            return (
+              '<div class="classic-item">' +
+                '<div class="classic-item-head">' +
+                  '<span class="classic-tag">' + escapeHtml(ex.tag) + '</span>' +
+                  '<span class="classic-source">' + escapeHtml(ex.source) + '</span>' +
+                '</div>' +
+                '<p class="classic-text">“' + escapeHtml(ex.text) + '”</p>' +
+                '<p class="classic-note">' + escapeHtml(ex.note) + '</p>' +
+              '</div>'
+            );
+          })
+          .join('');
+
+        var booksHtml = (s.recommendedBooks || [])
+          .map(function (bk) {
+            return (
+              '<div class="book-card">' +
+                '<div class="book-title">' + escapeHtml(bk.title) + '</div>' +
+                '<div class="book-chapter">优先篇目：' + escapeHtml(bk.chapter) + '</div>' +
+                '<p class="book-reason">' + escapeHtml(bk.reason) + '</p>' +
+              '</div>'
+            );
+          })
+          .join('');
+
         dom.codexContent.innerHTML =
           '<div class="codex-detail-head">' +
             '<img class="codex-art" src="' + escapeHtml(s.image) + '" alt="' + escapeHtml(s.name) + '水墨插画">' +
@@ -395,10 +550,14 @@
             '<div class="quote-author">—— ' + escapeHtml(s.quoteAuthor) + '</div>' +
             '<p class="quote-modern">' + escapeHtml(s.quoteModern) + '</p>' +
           '</blockquote>' +
-          '<div style="padding:14px 16px;background:rgba(255,253,248,0.8);border:1px solid var(--ink-line);border-radius:6px;">' +
+          '<div style="padding:14px 16px;background:rgba(255,253,248,0.8);border:1px solid var(--ink-line);border-radius:6px;margin-bottom:16px;">' +
             '<strong style="display:block;margin-bottom:6px;">古人寻道镜像：' + escapeHtml(s.ancientStoryTitle) + '</strong>' +
             '<p style="margin:0;font-size:14.5px;color:var(--ink-mid);">' + escapeHtml(s.ancientStory) + '</p>' +
-          '</div>';
+          '</div>' +
+          '<h5 class="subsection-title" style="margin:16px 0 10px;">经典原典精选</h5>' +
+          '<div class="classics-grid" style="margin-bottom:16px;">' + classicsHtml + '</div>' +
+          '<h5 class="subsection-title" style="margin:14px 0 10px;">推荐精读古籍</h5>' +
+          '<div class="books-row">' + booksHtml + '</div>';
       }
     }
 
@@ -443,6 +602,10 @@
         })
         .join(' · ');
 
+      var extraClassic = s1.classicExcerpts && s1.classicExcerpts[0]
+        ? '典籍印证：“' + s1.classicExcerpts[0].text + '”（' + s1.classicExcerpts[0].source + '）'
+        : '';
+
       var text = [
         '【迷茫时候看看古人是怎么找到适合自己的道的？】',
         r.isPure
@@ -451,8 +614,10 @@
         '心性雅号：' + (insight ? insight.archetype : s1.daoTitle),
         '六家契合：' + distLine,
         '古人镜像名言：“' + s1.quote + '”——' + s1.quoteAuthor,
-        '当下破局一策：' + s1.actionNow
-      ].join('\n');
+        extraClassic,
+        s1.roadmap ? s1.roadmap.today : '今日立行：' + s1.actionNow,
+        s1.roadmap ? s1.roadmap.week : ''
+      ].filter(Boolean).join('\n');
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard

@@ -39,7 +39,7 @@ for (const relPath of filesToLoad) {
 
 const { SCHOOL_ORDER, SCHOOLS, COMBO_INSIGHTS, EXTRA_SCHOOLS, QUESTIONS, Scoring } = sandbox.DaoTest;
 
-console.log('1. 校验六大流派、四家补充流派与 36 种组合判词完整性...');
+console.log('1. 校验六大流派、四家补充流派、新增典籍指引字段与 36 种组合判词完整性...');
 assert.equal(SCHOOL_ORDER.length, 6, '核心流派数应为 6');
 for (const id of SCHOOL_ORDER) {
   const s = SCHOOLS[id];
@@ -48,8 +48,19 @@ for (const id of SCHOOL_ORDER) {
   assert.ok(s.quote && s.quoteAuthor && s.quoteModern, `${id} 名言字段缺失`);
   assert.ok(s.ancientStoryTitle && s.ancientStory, `${id} 古人故事字段缺失`);
   assert.ok(s.matchTrait && s.strength && s.shadow && s.actionNow, `${id} 导向字段缺失`);
+  assert.ok(Array.isArray(s.classicExcerpts) && s.classicExcerpts.length >= 4, `${id} 原典摘录应不少于 4 条`);
+  for (const ex of s.classicExcerpts) {
+    assert.ok(ex.tag && ex.text && ex.source && ex.note, `${id} 原典摘录字段不完整`);
+  }
+  assert.ok(Array.isArray(s.recommendedBooks) && s.recommendedBooks.length >= 2, `${id} 推荐书单应不少于 2 本`);
+  assert.ok(Array.isArray(s.sceneGuides) && s.sceneGuides.length === 4, `${id} 分场景破局指引应为 4 项`);
+  assert.ok(s.roadmap && s.roadmap.today && s.roadmap.week && s.roadmap.month, `${id} 三阶行动路线图缺失`);
+  assert.ok(Array.isArray(s.decisionChecklist) && s.decisionChecklist.length === 3, `${id} 重大抉择自检三问应为 3 条`);
 }
 assert.equal(EXTRA_SCHOOLS.length, 4, '补充流派数应为 4');
+for (const extra of EXTRA_SCHOOLS) {
+  assert.ok(Array.isArray(extra.classicExcerpts) && extra.classicExcerpts.length >= 2, `${extra.name} 原典摘录应不少于 2 条`);
+}
 
 for (const a of SCHOOL_ORDER) {
   for (const b of SCHOOL_ORDER) {
@@ -60,14 +71,14 @@ for (const a of SCHOOL_ORDER) {
   }
 }
 
-console.log('2. 校验 12 道测试题结构与严格对称权重矩阵...');
-assert.equal(QUESTIONS.length, 12, '题目数量必须为 12');
+console.log('2. 校验 18 道测试题结构与严格对称权重矩阵...');
+assert.equal(QUESTIONS.length, 18, '题目数量必须为 18');
 
 const primaryCounts = Object.fromEntries(SCHOOL_ORDER.map((id) => [id, 0]));
 const secondaryCounts = Object.fromEntries(SCHOOL_ORDER.map((id) => [id, 0]));
 
 for (const q of QUESTIONS) {
-  assert.ok(q.chapter && q.scenario, `第 ${q.id} 题题干不完整`);
+  assert.ok(q.chapter && q.epigraph && q.scenario, `第 ${q.id} 题题干或古籍微引不完整`);
   assert.equal(q.options.length, 4, `第 ${q.id} 题选项数必须为 4`);
 
   const primariesInQuestion = new Set();
@@ -85,10 +96,10 @@ for (const q of QUESTIONS) {
 }
 
 for (const id of SCHOOL_ORDER) {
-  assert.equal(primaryCounts[id], 8, `流派 ${id} 的主权重出现次数应为 8，实际为 ${primaryCounts[id]}`);
-  assert.equal(secondaryCounts[id], 8, `流派 ${id} 的次权重出现次数应为 8，实际为 ${secondaryCounts[id]}`);
+  assert.equal(primaryCounts[id], 12, `流派 ${id} 的主权重出现次数应为 12，实际为 ${primaryCounts[id]}`);
+  assert.equal(secondaryCounts[id], 12, `流派 ${id} 的次权重出现次数应为 12，实际为 ${secondaryCounts[id]}`);
 }
-console.log('   权重分布验算通过：每家 primary=8 次，secondary=8 次。');
+console.log('   权重分布验算通过：每家 primary=12 次，secondary=12 次。');
 
 console.log('3. 校验极端单流派定向作答（预期主道稳居第一且 >= 45%）...');
 for (const targetId of SCHOOL_ORDER) {
@@ -115,7 +126,7 @@ console.log('4. 运行 5000 次随机答题压力测试...');
 for (let i = 0; i < 5000; i++) {
   const randAnswers = QUESTIONS.map(() => Math.floor(Math.random() * 4));
   const res = Scoring.calculateResult(randAnswers, QUESTIONS, SCHOOL_ORDER);
-  assert.equal(res.totalScore, 48, '12 题总权重应恒为 48');
+  assert.equal(res.totalScore, 72, '18 题总权重应恒为 72');
   let sum = 0;
   for (const item of res.ranked) {
     assert.ok(Number.isInteger(item.percent), '百分比必须为整数');

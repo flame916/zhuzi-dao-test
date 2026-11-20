@@ -575,39 +575,81 @@
       ctx.fillText(item.percent + '%', contentLeft + contentWidth, rowY + 8);
     });
 
-    // 5. 典籍名言与当下破局一句
-    y += result.ranked.length * 58 + 38;
-    var quoteBoxH = 270;
+    // 5. 典籍名言与今日破局指引
+    y += result.ranked.length * 58 + 26;
+    var quoteBoxH = 216;
     ctx.save();
     ctx.fillStyle = 'rgba(240, 235, 224, 0.72)';
     fillRoundRect(ctx, contentLeft, y, contentWidth, quoteBoxH, 8);
     // 左侧朱砂竖杠
     ctx.fillStyle = '#a62c2b';
-    ctx.fillRect(contentLeft, y + 20, 6, quoteBoxH - 40);
+    ctx.fillRect(contentLeft, y + 18, 6, quoteBoxH - 36);
     ctx.restore();
 
     var qX = contentLeft + 34;
-    var qY = y + 54;
+    var qY = y + 48;
     ctx.textAlign = 'left';
     ctx.fillStyle = '#1a1a1a';
-    ctx.font = '600 28px ' + FONT_SERIF;
+    ctx.font = '600 26px ' + FONT_SERIF;
     var qLines = wrapCanvasText(ctx, '“' + top1School.quote + '”', contentWidth - 64);
     qLines.slice(0, 2).forEach(function (line, i) {
-      ctx.fillText(line, qX, qY + i * 42);
+      ctx.fillText(line, qX, qY + i * 38);
     });
 
-    qY += Math.min(2, qLines.length) * 42 + 8;
+    qY += Math.min(2, qLines.length) * 38 + 6;
     ctx.fillStyle = '#6b6862';
-    ctx.font = '400 22px ' + FONT_SERIF;
+    ctx.font = '400 21px ' + FONT_SERIF;
     ctx.fillText('—— ' + top1School.quoteAuthor, qX, qY);
 
-    qY += 46;
+    qY += 38;
     ctx.fillStyle = '#383632';
-    ctx.font = '400 24px ' + FONT_SERIF;
+    ctx.font = '400 22px ' + FONT_SERIF;
     var modLines = wrapCanvasText(ctx, '古今镜像：' + top1School.quoteModern, contentWidth - 64);
     modLines.slice(0, 2).forEach(function (line, i) {
-      ctx.fillText(line, qX, qY + i * 36);
+      ctx.fillText(line, qX, qY + i * 33);
     });
+
+    // 今日破局指引框
+    y += quoteBoxH + 24;
+    var guideBoxH = 226;
+    ctx.save();
+    ctx.fillStyle = 'rgba(253, 251, 246, 0.85)';
+    fillRoundRect(ctx, contentLeft, y, contentWidth, guideBoxH, 8);
+    ctx.strokeStyle = 'rgba(26, 26, 26, 0.16)';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(contentLeft, y + 18, 6, guideBoxH - 36);
+    ctx.restore();
+
+    var gX = contentLeft + 34;
+    var gY = y + 44;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#a62c2b';
+    ctx.font = '700 22px ' + FONT_SERIF;
+    ctx.fillText('今日破局指引 · 抉择校准', gX, gY);
+
+    gY += 38;
+    ctx.fillStyle = '#1a1a1a';
+    ctx.font = '400 22px ' + FONT_SERIF;
+    var todayText = top1School.roadmap && top1School.roadmap.today ? top1School.roadmap.today : top1School.actionNow;
+    var todayLines = wrapCanvasText(ctx, todayText, contentWidth - 64);
+    todayLines.slice(0, 2).forEach(function (line, i) {
+      ctx.fillText(line, gX, gY + i * 33);
+    });
+
+    gY += Math.min(2, todayLines.length) * 33 + 10;
+    var checkItem = top1School.decisionChecklist && top1School.decisionChecklist[0]
+      ? '决策自问：' + top1School.decisionChecklist[0]
+      : '';
+    if (checkItem) {
+      ctx.fillStyle = '#4e4b45';
+      ctx.font = '400 21px ' + FONT_SERIF;
+      var checkLines = wrapCanvasText(ctx, checkItem, contentWidth - 64);
+      checkLines.slice(0, 2).forEach(function (line, i) {
+        ctx.fillText(line, gX, gY + i * 31);
+      });
+    }
 
     // 6. 底部结语落款
     var now = new Date();
