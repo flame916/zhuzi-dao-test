@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <filter id="zong-ink" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="3" seed="41" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <radialGradient id="zong-moon" cx="50%" cy="44%" r="42%">
+      <stop offset="0%" stop-color="#1a1a1a" stop-opacity="0.02"/>
+      <stop offset="76%" stop-color="#1a1a1a" stop-opacity="0.075"/>
+      <stop offset="96%" stop-color="#1a1a1a" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#1a1a1a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wind-swirl" x1="60" y1="160" x2="340" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e1e1e" stop-opacity="0.04"/>
+      <stop offset="35%" stop-color="#222222" stop-opacity="0.28"/>
+      <stop offset="68%" stop-color="#161616" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#2c2c2c" stop-opacity="0.03"/>
+    </linearGradient>
+    <linearGradient id="ridge-fade" x1="200" y1="265" x2="200" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1d1d1d" stop-opacity="0.48"/>
+      <stop offset="100%" stop-color="#1d1d1d" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 淡墨圆月 -->
+  <circle cx="200" cy="178" r="134" fill="url(#zong-moon)"/>
+
+  <!-- 翻涌流转的水墨风云 -->
+  <g filter="url(#zong-ink)">
+    <path d="M 52 216 C 102 186, 152 222, 206 184 C 254 150, 304 176, 352 146 C 318 192, 266 186, 214 214 C 154 246, 98 228, 52 216 Z" fill="url(#wind-swirl)"/>
+    <path d="M 78 148 C 122 132, 166 146, 208 122 C 252 98, 294 114, 326 98" stroke="#242424" stroke-width="6" stroke-opacity="0.1" stroke-linecap="round"/>
+    <path d="M 96 254 C 156 232, 224 252, 294 222" stroke="#1e1e1e" stroke-width="4.5" stroke-opacity="0.12" stroke-linecap="round"/>
+  </g>
+
+  <!-- 振翅凌空苍鹰剪影 -->
+  <g filter="url(#zong-ink)">
+    <!-- 鹰左翼（蓄势舒展） -->
+    <path d="M 192 152 C 166 122, 128 96, 86 92 C 104 108, 118 118, 134 128 C 122 126, 108 122, 98 118 C 118 134, 146 144, 178 156 Z" fill="#171717"/>
+    <!-- 鹰右翼（乘风上扬） -->
+    <path d="M 204 148 C 234 114, 272 86, 316 80 C 296 98, 282 110, 266 120 C 278 118, 294 114, 306 110 C 284 128, 250 142, 214 156 Z" fill="#171717"/>
+    <!-- 鹰身、勾喙与展尾 -->
+    <path d="M 178 152 C 190 140, 208 140, 216 154 L 222 146 L 232 148 L 222 155 C 216 168, 204 182, 188 192 L 168 186 C 178 174, 180 162, 178 152 Z" fill="#141414"/>
+    <!-- 尾羽分岔墨线 -->
+    <path d="M 184 184 L 160 202 M 188 186 L 172 206 M 192 186 L 186 204" stroke="#1c1c1c" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- 蜿蜒纵横群峰底座 -->
+  <g filter="url(#zong-ink)">
+    <path d="M 48 332 L 98 286 L 146 312 L 204 268 L 258 308 L 308 278 L 358 332 Z" fill="url(#ridge-fade)"/>
+    <path d="M 98 286 C 120 296, 134 306, 146 312 M 204 268 C 228 282, 244 298, 258 308 M 308 278 C 324 292, 340 310, 358 332" stroke="#1b1b1b" stroke-width="1.3" stroke-opacity="0.45"/>
+  </g>
+</svg>

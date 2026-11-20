@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>迷茫时候看看古人是怎么找到适合自己的道的？｜诸子百家心性镜像测试</title>
+  <meta name="description" content="十二道红尘情境问心，照见你与儒、道、法、墨、兵、纵横诸子百家的契合占比，从两千年前先贤的迷茫与寻道中照见当下破局之道。">
+
+  <!-- 非阻塞异步加载思源宋体与马善政楷书，无网环境无缝降级至本地宋体栈 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600;700&display=swap">
+  </noscript>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ==================== 1. 首屏问道卷 ==================== -->
+    <section id="view-home" class="view-panel view-active hero-section" aria-label="卷首介绍">
+      <div class="hero-bg-layer" aria-hidden="true">
+        <img class="hero-bg-img" src="assets/images/hero-ink-mountains.jpg" alt="水墨远山孤舟背景">
+      </div>
+
+      <main class="hero-inner">
+        <div class="hero-top-meta">
+          <span class="hero-seal-vertical" aria-hidden="true">寻道</span>
+          <span class="hero-kicker">文学历史镜像链接 · 诸子百家问心录</span>
+        </div>
+
+        <h1 class="hero-title">迷茫时候看看古人是怎么找到适合自己的道的？</h1>
+
+        <p class="hero-subtitle">
+          春秋战国亦是一个礼崩乐坏、前路莫测的时代。孔子的忧思、庄子的逍遥、韩非的冷峻、墨子的奔走、孙膑的隐忍与苏秦的纵横，本质上都是先贤面对人生迷茫开出的不同解方。<br>
+          十二道明确的情境抉择，为你算出最贴近本心的百家道途占比。
+        </p>
+
+        <div class="hero-schools-row" id="hero-schools-row" aria-label="六大流派快览">
+          <button type="button" class="school-pill" data-codex-tab="ru"><span class="school-pill-char">儒</span>儒家</button>
+          <button type="button" class="school-pill" data-codex-tab="dao"><span class="school-pill-char">道</span>道家</button>
+          <button type="button" class="school-pill" data-codex-tab="fa"><span class="school-pill-char">法</span>法家</button>
+          <button type="button" class="school-pill" data-codex-tab="mo"><span class="school-pill-char">墨</span>墨家</button>
+          <button type="button" class="school-pill" data-codex-tab="bing"><span class="school-pill-char">兵</span>兵家</button>
+          <button type="button" class="school-pill" data-codex-tab="zong"><span class="school-pill-char">纵</span>纵横家</button>
+        </div>
+
+        <div class="hero-actions">
+          <button type="button" id="btn-start-quiz" class="btn btn-primary">展卷问心 · 开始测试</button>
+          <button type="button" id="btn-open-codex-home" class="btn btn-secondary">先览诸子百家录</button>
+        </div>
+      </main>
+
+      <footer class="hero-footer-note">
+        十二道红尘情境问心 · 无模棱两可选项 · 测出你的六家道途占比
+      </footer>
+    </section>
+
+    <!-- ==================== 2. 12 题问心卷 ==================== -->
+    <section id="view-quiz" class="view-panel" aria-label="心理测试答题区">
+      <div class="quiz-wrapper">
+        <div class="quiz-topbar">
+          <button type="button" id="btn-home" class="btn btn-ghost">← 返回卷首</button>
+          <span id="quiz-progress-text" class="quiz-progress-text">第 壹 / 拾贰 问</span>
+        </div>
+
+        <div class="ink-progress-track" aria-hidden="true">
+          <div id="quiz-progress-fill" class="ink-progress-fill"></div>
+        </div>
+
+        <article class="quiz-card">
+          <img class="quiz-card-brush ink-blend" src="assets/images/ink-divider-brush.svg" alt="" aria-hidden="true">
+          <div id="quiz-chapter" class="quiz-chapter">第一问</div>
+          <h2 id="quiz-scenario" class="quiz-scenario"></h2>
+          <div id="quiz-options" class="options-list" role="radiogroup" aria-label="情境选项"></div>
+
+          <div class="quiz-bottom-bar">
+            <button type="button" id="btn-prev" class="btn btn-ghost">← 上一问</button>
+            <span class="quiz-hint">凭第一直觉择你真实会走的步子</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== 3. 研墨推演过渡屏 ==================== -->
+    <section id="view-loading" class="view-panel" aria-label="研墨推演中">
+      <div class="loading-wrapper">
+        <div class="ink-enso" aria-hidden="true"></div>
+        <h2 class="loading-title">正在研墨推演……</h2>
+        <p class="loading-sub">照见千载之前，与你同频的那一条道</p>
+      </div>
+    </section>
+
+    <!-- ==================== 4. 得道结果长卷 ==================== -->
+    <section id="view-result" class="view-panel" aria-label="测试结果报告">
+      <div class="result-wrapper">
+        <header class="result-page-header">
+          <span class="hero-kicker">诸子百家心性镜像签 · 照见己道</span>
+          <h1 class="result-page-title">迷茫时候看看古人是怎么找到适合自己的道的？</h1>
+        </header>
+
+        <!-- 卷首画像卡 -->
+        <article class="ink-card result-hero-card">
+          <div class="result-art-frame">
+            <img id="res-art-img" class="result-art-img" src="assets/images/school-daojia.svg" alt="主道水墨意象图">
+          </div>
+          <div>
+            <div class="result-summary-top">
+              <div>
+                <span id="res-badge" class="seal-badge">主辅双道合参</span>
+                <h2 id="res-headline" class="result-main-heading"></h2>
+              </div>
+              <div id="res-seal" class="seal-square" aria-label="流派篆印"></div>
+            </div>
+            <div id="res-archetype" class="result-archetype-tag"></div>
+            <p id="res-verdict" class="result-verdict"></p>
+            <div id="res-keywords" class="keyword-row"></div>
+          </div>
+        </article>
+
+        <!-- 六家道途占比区 -->
+        <article class="ink-card">
+          <div class="section-heading-row">
+            <h3 class="section-heading">你的百家道途占比</h3>
+            <span class="section-subheading">点击任意流派行，展开为何与你契合</span>
+          </div>
+          <div class="distribution-grid">
+            <div class="radar-box">
+              <div id="res-radar-container"></div>
+              <span class="radar-caption">六维相对契合度水墨道盘（总计 100%）</span>
+            </div>
+            <div id="res-bars-container" class="bars-list"></div>
+          </div>
+        </article>
+
+        <!-- 古人也曾迷茫 · 历史镜像卡 -->
+        <article class="ink-card">
+          <div class="section-heading-row">
+            <h3 class="section-heading">古人也曾迷茫 · 历史镜像</h3>
+            <span id="res-story-rep" class="section-subheading"></span>
+          </div>
+          <h4 id="res-story-title" class="story-title"></h4>
+          <p id="res-story-body" class="story-body"></p>
+          <blockquote class="quote-block">
+            <p id="res-quote" class="quote-text"></p>
+            <div id="res-quote-author" class="quote-author"></div>
+            <p id="res-quote-modern" class="quote-modern"></p>
+          </blockquote>
+        </article>
+
+        <!-- 破局导向三策卡 -->
+        <article class="ink-card">
+          <div class="section-heading-row">
+            <h3 class="section-heading">迷茫时的破局导向</h3>
+            <span class="section-subheading">以古为镜，知长短而安当下</span>
+          </div>
+          <div class="advice-grid">
+            <div class="advice-box">
+              <h4 class="advice-label"><span class="advice-dot"></span>你的天赋支点</h4>
+              <p id="res-strength"></p>
+            </div>
+            <div class="advice-box">
+              <h4 class="advice-label"><span class="advice-dot"></span>以辅调主 · 内在平衡</h4>
+              <p id="res-balance"></p>
+            </div>
+            <div class="advice-box">
+              <h4 class="advice-label"><span class="advice-dot"></span>警惕的执念阴影</h4>
+              <p id="res-shadow"></p>
+            </div>
+            <div class="advice-box advice-action">
+              <h4 class="advice-label"><span class="advice-dot"></span>当下立刻能做的一件小事</h4>
+              <p id="res-action"></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 底部流转操作区 -->
+        <div class="result-actions-bar">
+          <button type="button" id="btn-gen-poster" class="btn btn-primary">生成水墨签文长图</button>
+          <button type="button" id="btn-copy-result" class="btn btn-secondary">复制测试结果文案</button>
+          <button type="button" id="btn-open-codex-result" class="btn btn-secondary">浏览诸子百家典籍</button>
+          <button type="button" id="btn-restart" class="btn btn-ghost">重整心绪 · 再测一次</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ==================== 弹窗 1：诸子百家典籍录 ==================== -->
+  <div id="modal-codex" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="codex-modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="codex-modal-title" class="modal-title">诸子百家典籍录 · 先贤寻道十家</h3>
+        <button type="button" class="modal-close" data-close-modal="modal-codex" aria-label="关闭典籍弹窗">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="codex-tabs" class="codex-tabs" role="tablist"></div>
+        <div id="codex-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 弹窗 2：水墨签文长图预览 ==================== -->
+  <div id="modal-poster" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="poster-modal-title">
+    <div class="modal-dialog modal-dialog-narrow">
+      <div class="modal-header">
+        <h3 id="poster-modal-title" class="modal-title">你的水墨镜像签文</h3>
+        <button type="button" class="modal-close" data-close-modal="modal-poster" aria-label="关闭长图弹窗">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="poster-preview-wrap">
+          <img id="poster-preview-img" class="poster-preview-img" src="" alt="诸子百家水墨签文长图预览">
+          <p class="poster-tip">1080 × 1920 高清竖版签文图，手机端亦可长按图片保存</p>
+          <a id="btn-download-poster" class="btn btn-primary" href="#" download="诸子百家心性镜像签.png">保存高清签文图片 (.png)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 轻提示 Toast -->
+  <div id="toast-msg" class="toast-msg" role="status" aria-live="polite"></div>
+
+  <!-- 按严格依赖顺序以普通脚本挂载至 window.DaoTest，兼容 file:// 与 HTTP -->
+  <script defer src="js/data-schools.js"></script>
+  <script defer src="js/data-questions.js"></script>
+  <script defer src="js/scoring.js"></script>
+  <script defer src="js/visuals.js"></script>
+  <script defer src="js/app.js"></script>
+</body>
+</html>

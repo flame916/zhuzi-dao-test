@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="96" viewBox="0 0 800 96" fill="none">
+  <defs>
+    <filter id="brush-rough" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04 0.14" numOctaves="3" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="mist-blur" x="-10%" y="-30%" width="120%" height="160%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <linearGradient id="ink-sweep" x1="60" y1="48" x2="740" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a1a1a" stop-opacity="0"/>
+      <stop offset="16%" stop-color="#222222" stop-opacity="0.45"/>
+      <stop offset="45%" stop-color="#141414" stop-opacity="0.88"/>
+      <stop offset="72%" stop-color="#2b2b2b" stop-opacity="0.52"/>
+      <stop offset="88%" stop-color="#3a3a3a" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#1a1a1a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ink-mist" x1="120" y1="48" x2="680" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4a4a4a" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#3a3a3a" stop-opacity="0.16"/>
+      <stop offset="60%" stop-color="#2c2c2c" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#4a4a4a" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 底层淡墨烟岚晕染 -->
+  <ellipse cx="400" cy="50" rx="280" ry="18" fill="url(#ink-mist)" filter="url(#mist-blur)"/>
+
+  <!-- 主毛笔横向飞白墨迹 -->
+  <g filter="url(#brush-rough)">
+    <path d="M 88 51 C 175 43, 278 40, 392 46 C 498 51, 610 47, 712 43 C 668 50, 560 56, 425 53 C 300 50, 188 57, 88 51 Z" fill="url(#ink-sweep)"/>
+    <!-- 飞白枯笔分丝 -->
+    <path d="M 150 45 C 245 41, 345 40, 445 44" stroke="#1b1b1b" stroke-width="1.6" stroke-opacity="0.42" stroke-linecap="round"/>
+    <path d="M 290 54 C 410 56, 530 53, 665 46" stroke="#222222" stroke-width="1.4" stroke-opacity="0.38" stroke-linecap="round"/>
+    <path d="M 480 41 C 565 40, 640 41, 706 42" stroke="#2d2d2d" stroke-width="1.1" stroke-opacity="0.28" stroke-dasharray="14 6 5 8" stroke-linecap="round"/>
+    <path d="M 110 54 C 170 55, 228 54, 275 51" stroke="#333333" stroke-width="1.1" stroke-opacity="0.25" stroke-dasharray="10 5 4 7" stroke-linecap="round"/>
+  </g>
+
+  <!-- 两侧灵动飞散小墨点 -->
+  <circle cx="136" cy="40" r="1.8" fill="#2a2a2a" fill-opacity="0.45"/>
+  <circle cx="164" cy="60" r="1.2" fill="#3a3a3a" fill-opacity="0.32"/>
+  <circle cx="622" cy="36" r="1.6" fill="#2a2a2a" fill-opacity="0.38"/>
+  <circle cx="648" cy="56" r="2.1" fill="#1e1e1e" fill-opacity="0.35"/>
+  <circle cx="688" cy="39" r="1.1" fill="#444444" fill-opacity="0.28"/>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <filter id="ink-sharp" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.036" numOctaves="3" seed="23" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.1" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <radialGradient id="fa-moon" cx="50%" cy="42%" r="42%">
+      <stop offset="0%" stop-color="#1a1a1a" stop-opacity="0.02"/>
+      <stop offset="76%" stop-color="#1a1a1a" stop-opacity="0.07"/>
+      <stop offset="96%" stop-color="#1a1a1a" stop-opacity="0.115"/>
+      <stop offset="100%" stop-color="#1a1a1a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cliff-left" x1="80" y1="80" x2="170" y2="275" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#141414" stop-opacity="0.88"/>
+      <stop offset="65%" stop-color="#2c2c2c" stop-opacity="0.52"/>
+      <stop offset="100%" stop-color="#3a3a3a" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="cliff-right" x1="290" y1="96" x2="220" y2="270" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1d1d1d" stop-opacity="0.72"/>
+      <stop offset="75%" stop-color="#333333" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#3a3a3a" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 淡墨背景圆 -->
+  <circle cx="200" cy="176" r="134" fill="url(#fa-moon)"/>
+
+  <!-- 峻岭孤峰（斧劈皴冷峻峰峦） -->
+  <g filter="url(#ink-sharp)">
+    <path d="M 68 256 L 106 112 L 132 76 L 150 132 L 178 242 Z" fill="url(#cliff-left)"/>
+    <!-- 斧劈山脊明暗线 -->
+    <path d="M 132 76 L 122 146 L 108 214" stroke="#141414" stroke-width="1.8" stroke-opacity="0.75"/>
+    <path d="M 222 238 L 266 130 L 290 96 L 312 152 L 336 250 Z" fill="url(#cliff-right)"/>
+    <path d="M 290 96 L 284 166 L 274 222" stroke="#1c1c1c" stroke-width="1.5" stroke-opacity="0.6"/>
+  </g>
+
+  <!-- 前景古衡天平与玉尺（严谨法度意象） -->
+  <g filter="url(#ink-sharp)">
+    <!-- 底座阴影 -->
+    <ellipse cx="200" cy="336" rx="82" ry="8" fill="#1a1a1a" fill-opacity="0.12"/>
+    <!-- 底座 -->
+    <path d="M 158 332 L 242 332 L 234 322 L 166 322 Z" fill="#1d1d1d"/>
+    <!-- 立柱 -->
+    <rect x="196" y="176" width="8" height="146" rx="1.5" fill="#181818"/>
+    <circle cx="200" cy="170" r="6" fill="#181818"/>
+    <!-- 横梁天平杆 -->
+    <path d="M 106 184 L 294 184" stroke="#161616" stroke-width="4.2" stroke-linecap="round"/>
+    <circle cx="106" cy="184" r="3.5" fill="#161616"/>
+    <circle cx="294" cy="184" r="3.5" fill="#161616"/>
+    <!-- 左侧权衡秤盘 -->
+    <line x1="106" y1="184" x2="84" y2="254" stroke="#222222" stroke-width="1.4"/>
+    <line x1="106" y1="184" x2="128" y2="254" stroke="#222222" stroke-width="1.4"/>
+    <path d="M 78 254 C 88 267, 124 267, 134 254 Z" fill="#232323"/>
+    <!-- 右侧权衡秤盘 -->
+    <line x1="294" y1="184" x2="272" y2="254" stroke="#222222" stroke-width="1.4"/>
+    <line x1="294" y1="184" x2="316" y2="254" stroke="#222222" stroke-width="1.4"/>
+    <path d="M 266 254 C 276 267, 312 267, 322 254 Z" fill="#232323"/>
+    <!-- 底部横置刻尺 -->
+    <rect x="128" y="302" width="144" height="9" rx="1" fill="#282828" fill-opacity="0.82"/>
+    <g stroke="#f5f2eb" stroke-width="1.1" stroke-opacity="0.75">
+      <line x1="144" y1="302" x2="144" y2="307"/>
+      <line x1="162" y1="302" x2="162" y2="308"/>
+      <line x1="180" y1="302" x2="180" y2="307"/>
+      <line x1="198" y1="302" x2="198" y2="308"/>
+      <line x1="216" y1="302" x2="216" y2="307"/>
+      <line x1="234" y1="302" x2="234" y2="308"/>
+      <line x1="252" y1="302" x2="252" y2="307"/>
+    </g>
+  </g>
+</svg>
