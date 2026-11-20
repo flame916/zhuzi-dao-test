@@ -21,7 +21,7 @@ body { font-size: 16px; }
 .masthead a, .masthead button, .text-link, .link-btn, .btn-resume { color: var(--ink-mid); background: none; border: 0; padding: 8px 0; font: inherit; font-size: 15px; cursor: pointer; text-decoration: none; }
 .masthead a:hover, .masthead button:hover, .text-link:hover, .link-btn:hover { color: var(--seal-red); text-decoration: underline; text-underline-offset: 5px; }
 .landscape { position: relative; isolation: isolate; overflow: hidden; }
-.mountain-art { position: absolute; inset: 0 0 0 19%; z-index: -1; pointer-events: none; background: url("../assets/images/hero-ink-mountains.jpg") center bottom / cover no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent 0%, #0009 28%, black 49%); }
+.mountain-art { position: absolute; inset: 0 0 0 19%; z-index: -1; pointer-events: none; background: url("../assets/images/hero-ink.webp") center bottom / cover no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent 0%, #0009 28%, black 49%); }
 .landscape-inner { min-height: 477px; padding-block: 45px 48px; position: relative; display: flex; align-items: center; }
 .cover-copy { position: relative; z-index: 1; }
 .cover-kicker { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; font-size: 14px; color: var(--seal-red); font-weight: bold; letter-spacing: .18em; }
@@ -29,14 +29,16 @@ body { font-size: 16px; }
 .cover-title { margin: 0; font-family: var(--font-calligraphy); font-size: clamp(50px, 5.8vw, 80px); font-weight: bold; letter-spacing: -.045em; line-height: 1.1; }
 .cover-title span { color: var(--seal-red); }
 .cover-intro { color: #48463f; line-height: 1.85; margin: 19px 0 21px; }
-.mode-cards { display: flex; flex-wrap: wrap; gap: 12px; }
-.mode-card { display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 48px; border: 1px solid #9e9a8d; border-radius: 3px; background: #faf9f4e6; color: var(--ink-heavy); cursor: pointer; transition: background .2s, transform .2s, box-shadow .2s; }
-.mode-card strong { font-size: 16px; }
-.mode-card span { font: 13px/1.5 system-ui, sans-serif; }
-.mode-primary { border-color: #262722; background: #262722; color: #fffdf4; }
-.mode-primary span { color: #eeece4; }
-.mode-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px #3632281b; }
-.mode-primary:hover { background: #423c33; }
+.mode-cards { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.mode-card { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 48px; text-decoration: none; }
+.mode-card span { font: 14px/1.5 system-ui, sans-serif; }
+.mode-primary { padding: 12px 26px; color: #fff; background: var(--seal-red); border-radius: 4px; box-shadow: 0 3px 10px #48201624; }
+.mode-primary strong { font-size: 21px; letter-spacing: .06em; }
+.mode-primary:hover { background: #78302a; }
+.mode-full { font-size: 16px; font-weight: bold; color: var(--ink-mid); text-decoration: underline; text-underline-offset: 4px; }
+.mode-full span { font-size: 13px; font-weight: normal; }
+.start-pending { display: none; margin-top: 5px; color: var(--ink-mid); font-size: 14px; }
+.start-pending:target { display: block; }
 .btn-resume { color: var(--seal-red); text-decoration: underline; text-underline-offset: 4px; }
 .margin-verse { position: absolute; right: 5%; top: 14%; display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 10px; }
 .margin-verse span, .margin-verse small { writing-mode: vertical-rl; }
@@ -107,9 +109,12 @@ body { font-size: 16px; }
   .margin-verse { right: 0; top: 30px; gap: 4px; }
   .margin-verse span { font-size: 16px; }
   .margin-verse small { font-size: 12px; }
-  .mountain-art { inset: 0 -12% 0 0; background-size: auto 68%; background-position: right bottom; mask-image: linear-gradient(to bottom, transparent 28%,#0007 65%, black); }
-  .mode-cards { gap: 8px; }
-  .mode-card { flex-direction: column; gap: 0; align-items: flex-start; padding: 7px 16px; }
+  .mountain-art { background-image: url("../assets/images/hero-ink-mobile.webp"); inset: 0 -12% 0 0; background-size: auto 68%; background-position: right bottom; mask-image: linear-gradient(to bottom, transparent 28%,#0007 65%, black); }
+  .cover-copy { width: 100%; }
+  .mode-cards { display: grid; justify-items: stretch; gap: 2px; }
+  .mode-primary { min-height: 56px; justify-content: space-between; padding: 10px 20px; }
+  .mode-full { justify-self: start; min-height: 44px; gap: 10px; }
+  .landscape-inner { padding-bottom: 32px; }
   .shelf { padding-block: 18px 24px; }
   .shelf-head > div { display: block; }
   .shelf-head p { font-size: 14px; }
@@ -144,6 +149,6 @@ body { font-size: 16px; }
 .report-index a:hover { color: var(--seal-red); }
 .result-wrapper [id^="result-"], #res-reliability-card { scroll-margin-top: 16px; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-section.view-active .mountain-art { animation: ink-landscape-in 1.25s ease-out both; }
+  .hero-section.view-active .mountain-art { animation: ink-landscape-in .18s ease-out both; }
   @keyframes ink-landscape-in { from { opacity: .55; } to { opacity: 1; } }
 }

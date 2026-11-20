@@ -19,19 +19,15 @@
     return (tens === 1 ? '' : CN_DIGITS[tens]) + '拾' + CN_DIGITS[ones];
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function initializeQuiz() {
     var DaoTest = root.DaoTest || {};
-    var SCHOOLS = DaoTest.SCHOOLS;
-    var SCHOOL_ORDER = DaoTest.SCHOOL_ORDER;
-    var COMBO_INSIGHTS = DaoTest.COMBO_INSIGHTS;
-    var EXTRA_SCHOOLS = DaoTest.EXTRA_SCHOOLS;
     var QUESTIONS = DaoTest.QUESTIONS;
-    var SCALE_ITEMS = DaoTest.SCALE_ITEMS || [];
-    var SCALE_LEVELS = DaoTest.SCALE_LEVELS || [];
-    var Scoring = DaoTest.Scoring;
-    var Visuals = DaoTest.Visuals;
-
-    if (!SCHOOLS || !QUESTIONS || !Scoring || !Visuals) {
+    var SCALE_ITEMS = DaoTest.SCALE_ITEMS;
+    var SCALE_LEVELS = DaoTest.SCALE_LEVELS;
+    if (!QUESTIONS || !SCALE_ITEMS || !SCALE_LEVELS) {
+      document.querySelectorAll('.start-pending').forEach(function (hint) {
+        hint.textContent = '题库未能载入，请刷新重试。';
+      });
       return;
     }
 
@@ -335,7 +331,7 @@
         } else {
           finishQuizAndRenderResult();
         }
-      }, root.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260);
+      }, root.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 120);
     }
 
     function goPrev() {
@@ -350,22 +346,21 @@
      */
     function finishQuizAndRenderResult() {
       switchView('loading');
-      try {
-        var opts = state.mode === 'full' ? { scaleAnswers: state.scaleAnswers, scaleItems: SCALE_ITEMS } : null;
-        state.result = Scoring.calculateResult(state.answers, QUESTIONS, SCHOOL_ORDER, opts);
-      } catch (err) {
+      reportReady.then(function (ready) {
+        try {
+          if (!ready) throw new Error('解读资料未能载入，请刷新后继续。');
+          var opts = state.mode === 'full' ? { scaleAnswers: state.scaleAnswers, scaleItems: SCALE_ITEMS } : null;
+          state.result = DaoTest.Scoring.calculateResult(state.answers, QUESTIONS, DaoTest.SCHOOL_ORDER, opts);
+          renderResult(state.result);
+          clearProgress();
+          switchView('result');
+        } catch (err) {
+          saveProgress();
+          switchView('quiz');
+          showToast(ready ? '未能生成结果，请检查作答后重试。' : '解读资料未能载入，请刷新后继续。');
+        }
         state.isTransitioning = false;
-        showToast('推演遇到意外，请检查作答后重试。');
-        switchView('quiz');
-        return;
-      }
-      clearProgress();
-
-      setTimeout(function () {
-        renderResult(state.result);
-        switchView('result');
-        state.isTransitioning = false;
-      }, 820);
+      });
     }
 
     /**
@@ -391,9 +386,9 @@
      * 渲染结果页面所有核心区块
      */
     function renderResult(result) {
-      var top1School = SCHOOLS[result.top1.id];
-      var top2School = SCHOOLS[result.top2.id];
-      var insight = COMBO_INSIGHTS[result.comboKey] || {
+      var top1School = DaoTest.SCHOOLS[result.top1.id];
+      var top2School = DaoTest.SCHOOLS[result.top2.id];
+      var insight = DaoTest.COMBO_INSIGHTS[result.comboKey] || {
         archetype: top1School.daoTitle,
         verdict: top1School.coreSummary,
         balanceAdvice: top1School.actionNow
@@ -408,7 +403,7 @@
       leaders.forEach(function (entry) {
         var label = document.createElement('span');
         label.className = 'leader-share';
-        label.textContent = SCHOOLS[entry.id].name + ' ' + entry.percent + '%';
+        label.textContent = DaoTest.SCHOOLS[entry.id].name + ' ' + entry.percent + '%';
         dom.resHeadline.appendChild(label);
       });
 
@@ -440,7 +435,7 @@
       document.getElementById('answer-evidence').innerHTML = evidence.map(function (entry) {
         var opt = entry.opt;
         return '<li><strong>' + escapeHtml(entry.q.chapter) + '</strong><p>' + escapeHtml(opt.text) +
-          '</p><small>' + SCHOOLS[opt.primary].name + ' +3　·　' + SCHOOLS[opt.secondary].name + ' +1</small></li>';
+          '</p><small>' + DaoTest.SCHOOLS[opt.primary].name + ' +3　·　' + DaoTest.SCHOOLS[opt.secondary].name + ' +1</small></li>';
       }).join('') || '<li>情境选项中没有给这一家记分，其得分来自自省卷。</li>';
       dom.resRelMode.textContent = result.mode === 'full' ? '情境与自评合读' : '情境卷';
       var rho = result.reliability && result.reliability.consistency;
@@ -456,13 +451,13 @@
         '先从得分最高的一家读起，再看看第二家会怎样处理同一件事。';
 
       // 渲染六维 SVG 雷达图
-      Visuals.renderInkRadarSVG(dom.resRadarContainer, result, SCHOOLS, SCHOOL_ORDER);
+      DaoTest.Visuals.renderInkRadarSVG(dom.resRadarContainer, result, DaoTest.SCHOOLS, DaoTest.SCHOOL_ORDER);
 
       // 渲染六家降序百分比条形榜（默认展开第一名）
       dom.resBarsContainer.innerHTML = '';
 
       result.ranked.forEach(function (item, idx) {
-        var s = SCHOOLS[item.id];
+        var s = DaoTest.SCHOOLS[item.id];
         var isTop2 = idx < 2;
 
         var row = document.createElement('div');
@@ -644,8 +639,8 @@
      */
     function renderCodexModal(activeKey) {
       state.activeCodexTab = activeKey || 'ru';
-      var tabs = SCHOOL_ORDER.map(function (id) {
-        return { key: id, label: SCHOOLS[id].name };
+      var tabs = DaoTest.SCHOOL_ORDER.map(function (id) {
+        return { key: id, label: DaoTest.SCHOOLS[id].name };
       });
       tabs.push({ key: 'extra', label: '其余四家（农·名·阴阳·杂）' });
 
@@ -670,7 +665,7 @@
       dom.codexContent.setAttribute('aria-labelledby', 'codex-tab-' + state.activeCodexTab);
       if (state.activeCodexTab === 'extra') {
         var extraHtml = '<div class="codex-extra-grid">';
-        EXTRA_SCHOOLS.forEach(function (item) {
+        DaoTest.EXTRA_SCHOOLS.forEach(function (item) {
           var extraQuotesHtml = (item.classicExcerpts || [])
             .map(function (ex) {
               return (
@@ -700,7 +695,7 @@
         extraHtml += '</div>';
         dom.codexContent.innerHTML = extraHtml;
       } else {
-        var s = SCHOOLS[state.activeCodexTab] || SCHOOLS.ru;
+        var s = DaoTest.SCHOOLS[state.activeCodexTab] || DaoTest.SCHOOLS.ru;
         var classicsHtml = (s.classicExcerpts || [])
           .map(function (ex) {
             return (
@@ -797,12 +792,12 @@
     function copyResultText() {
       if (!state.result) return;
       var r = state.result;
-      var s1 = SCHOOLS[r.top1.id];
-      var s2 = SCHOOLS[r.top2.id];
-      var insight = COMBO_INSIGHTS[r.comboKey];
+      var s1 = DaoTest.SCHOOLS[r.top1.id];
+      var s2 = DaoTest.SCHOOLS[r.top2.id];
+      var insight = DaoTest.COMBO_INSIGHTS[r.comboKey];
       var distLine = r.ranked
         .map(function (item) {
-          return SCHOOLS[item.id].name + item.percent + '%';
+          return DaoTest.SCHOOLS[item.id].name + item.percent + '%';
         })
         .join(' · ');
 
@@ -855,18 +850,45 @@
     }
 
     // ==================== 事件绑定 ====================
-    SCHOOL_ORDER.forEach(function (key) {
-      var school = SCHOOLS[key];
-      var card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'school-tile';
-      card.dataset.codexTab = key;
-      card.innerHTML = '<img src="' + escapeHtml(school.image) + '" alt=""><strong>' + school.name +
-        '</strong><span>' + escapeHtml(school.sealText) + '</span>';
-      document.getElementById('hero-schools-row').appendChild(card);
+    // 经典 defer 脚本按 HTML 顺序执行，题库就绪即可开答。
+    var reportReady = new Promise(function (resolve) {
+      document.addEventListener('DOMContentLoaded', function () {
+        if (DaoTest.SCHOOLS && DaoTest.SCHOOL_ORDER) buildSchoolShelf();
+        resolve(Boolean(DaoTest.SCHOOLS && DaoTest.SCHOOL_ORDER && DaoTest.COMBO_INSIGHTS &&
+          DaoTest.EXTRA_SCHOOLS && DaoTest.Scoring && DaoTest.Visuals));
+      }, { once: true });
     });
+
+    function buildSchoolShelf() {
+      DaoTest.SCHOOL_ORDER.forEach(function (key) {
+        var school = DaoTest.SCHOOLS[key];
+        var card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'school-tile';
+        card.dataset.codexTab = key;
+        card.innerHTML = '<img loading="lazy" decoding="async" src="' + escapeHtml(school.image) + '" alt=""><strong>' + school.name +
+          '</strong><span>' + escapeHtml(school.sealText) + '</span>';
+        card.addEventListener('click', function () { openSchool(key); });
+        document.getElementById('hero-schools-row').appendChild(card);
+      });
+    }
+
+    function openSchool(key) {
+      if (state.currentView === 'home' && !DaoTest.SCHOOLS) showToast('正在打开图鉴…');
+      var from = state.currentView;
+      reportReady.then(function (ready) {
+        if (from !== state.currentView) return;
+        if (!ready) { showToast('图鉴未能载入，请刷新重试。'); return; }
+        renderCodexModal(key);
+        openModal('modal-codex');
+      });
+    }
+
     document.querySelectorAll('[data-mode]').forEach(function (button) {
-      button.addEventListener('click', function () { startQuizFresh(button.dataset.mode); });
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        startQuizFresh(button.dataset.mode);
+      });
     });
     refreshResume();
     dom.btnResume.addEventListener('click', function () {
@@ -884,23 +906,10 @@
     });
 
     dom.btnOpenCodexHome.addEventListener('click', function () {
-      renderCodexModal('ru');
-      openModal('modal-codex');
+      openSchool('ru');
     });
-
     dom.btnOpenCodexResult.addEventListener('click', function () {
-      var defaultKey = state.result ? state.result.top1.id : 'ru';
-      renderCodexModal(defaultKey);
-      openModal('modal-codex');
-    });
-
-    // 首页六家印记快捷入口
-    document.querySelectorAll('[data-codex-tab]').forEach(function (pill) {
-      pill.addEventListener('click', function () {
-        var key = pill.getAttribute('data-codex-tab') || 'ru';
-        renderCodexModal(key);
-        openModal('modal-codex');
-      });
+      openSchool(state.result ? state.result.top1.id : 'ru');
     });
 
     dom.btnHome.addEventListener('click', function () {
@@ -915,10 +924,10 @@
     dom.btnGenPoster.addEventListener('click', function () {
       if (!state.result) return;
       try {
-        var dataUrl = Visuals.generateSharePosterDataURL(state.result, SCHOOLS, COMBO_INSIGHTS);
+        var dataUrl = DaoTest.Visuals.generateSharePosterDataURL(state.result, DaoTest.SCHOOLS, DaoTest.COMBO_INSIGHTS);
         dom.posterPreviewImg.src = dataUrl;
         dom.btnDownloadPoster.href = dataUrl;
-        var topName = SCHOOLS[state.result.top1.id].name;
+        var topName = DaoTest.SCHOOLS[state.result.top1.id].name;
         dom.btnDownloadPoster.setAttribute('download', '诸子百家镜像签_' + topName + state.result.top1.percent + '%.png');
         openModal('modal-poster');
       } catch (err) {
@@ -953,7 +962,7 @@
         }
         if (ev.target.matches('.codex-tab') && ['ArrowLeft','ArrowRight','Home','End'].includes(ev.key)) {
           ev.preventDefault();
-          var keys = SCHOOL_ORDER.concat('extra');
+          var keys = DaoTest.SCHOOL_ORDER.concat('extra');
           var index = keys.indexOf(state.activeCodexTab);
           if (ev.key === 'Home') index = 0;
           else if (ev.key === 'End') index = keys.length - 1;
@@ -966,5 +975,19 @@
       if (/^[1-4]$/.test(ev.key)) { ev.preventDefault(); handleOptionSelect(Number(ev.key) - 1); }
       if (ev.key === 'ArrowLeft') { ev.preventDefault(); goPrev(); }
     });
-  });
+    // 网络较慢时，原生链接先记录点击；也支持买家直接打开答题链接。
+    function openLinkedQuiz() {
+      var mode = root.location.hash.slice(1);
+      if (mode !== 'quick' && mode !== 'full') return;
+      try { root.history.replaceState(null, '', root.location.href.split('#')[0]); } catch (err) {}
+      if (state.currentView === 'quiz' && state.mode === mode) return;
+      var saved = loadProgress();
+      if (saved && saved.mode === mode) dom.btnResume.click();
+      else startQuizFresh(mode);
+    }
+    root.addEventListener('hashchange', openLinkedQuiz);
+    openLinkedQuiz();
+  }
+
+  initializeQuiz();
 })(typeof window !== 'undefined' ? window : globalThis);
