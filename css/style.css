@@ -648,6 +648,14 @@ img {
   line-height: 1.8;
 }
 
+.result-mini-label {
+  margin: 2px 0 6px;
+  color: var(--ink-heavy);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
 .keyword-row {
   display: flex;
   flex-wrap: wrap;

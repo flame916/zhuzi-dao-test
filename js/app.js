@@ -410,6 +410,9 @@
       renderSealChars(dom.resSeal, top1School.sealText);
       dom.resArchetype.textContent = insight.archetype;
       dom.resVerdict.textContent = insight.verdict;
+      document.getElementById('res-match-representatives').textContent = '先贤参照 · ' + top1School.representatives;
+      document.getElementById('res-hidden-trait').textContent = top1School.shadow;
+      document.getElementById('res-story-rep').textContent = top1School.representatives;
 
       // 关键词标签（合并主道 3 个与辅道 1 个特色词）
       dom.resKeywords.innerHTML = '';
@@ -793,29 +796,13 @@
       if (!state.result) return;
       var r = state.result;
       var s1 = DaoTest.SCHOOLS[r.top1.id];
-      var s2 = DaoTest.SCHOOLS[r.top2.id];
       var insight = DaoTest.COMBO_INSIGHTS[r.comboKey];
-      var distLine = r.ranked
-        .map(function (item) {
-          return DaoTest.SCHOOLS[item.id].name + item.percent + '%';
-        })
-        .join(' · ');
-
-      var extraClassic = s1.classicExcerpts && s1.classicExcerpts[0]
-        ? '典籍印证：“' + s1.classicExcerpts[0].text + '”（' + s1.classicExcerpts[0].source + '）'
-        : '';
-
       var text = [
-        '【迷茫时候看看古人是怎么找到适合自己的道的？】',
-        r.isPure
-          ? '我的本命道途：纯粹 · ' + s1.name + ' ' + r.top1.percent + '%'
-          : '我的主辅道途：' + s1.name + ' ' + r.top1.percent + '% + ' + s2.name + ' ' + r.top2.percent + '%',
-        '心性雅号：' + (insight ? insight.archetype : s1.daoTitle),
-        '六家契合：' + distLine,
-        '古人镜像名言：“' + s1.quote + '”——' + s1.quoteAuthor,
-        extraClassic,
-        s1.roadmap ? s1.roadmap.today : '今日立行：' + s1.actionNow,
-        s1.roadmap ? s1.roadmap.week : ''
+        '我和' + s1.representatives.split(' · ')[0] + '最同频：' + (insight ? insight.archetype : s1.daoTitle),
+        '做事路数：' + (insight ? insight.verdict : s1.matchTrait),
+        '隐藏小彩蛋：' + s1.shadow,
+        '今天可以试试：' + (s1.roadmap ? s1.roadmap.today : s1.actionNow),
+        '来测测你和哪位先贤同频：' + location.href.split('#')[0]
       ].filter(Boolean).join('\n');
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
