@@ -28,6 +28,7 @@ vm.createContext(sandbox);
 const filesToLoad = [
   'js/data-schools.js',
   'js/data-questions.js',
+  'js/data-scale.js',
   'js/scoring.js'
 ];
 
@@ -37,7 +38,7 @@ for (const relPath of filesToLoad) {
   vm.runInContext(code, sandbox, { filename: relPath });
 }
 
-const { SCHOOL_ORDER, SCHOOLS, COMBO_INSIGHTS, EXTRA_SCHOOLS, QUESTIONS, Scoring } = sandbox.DaoTest;
+const { SCHOOL_ORDER, SCHOOLS, COMBO_INSIGHTS, EXTRA_SCHOOLS, QUESTIONS, SCALE_ITEMS, Scoring } = sandbox.DaoTest;
 
 console.log('1. 校验六大流派、四家补充流派、新增典籍指引字段与 36 种组合判词完整性...');
 assert.equal(SCHOOL_ORDER.length, 6, '核心流派数应为 6');
@@ -45,6 +46,10 @@ for (const id of SCHOOL_ORDER) {
   const s = SCHOOLS[id];
   assert.ok(s, `缺少流派数据: ${id}`);
   assert.ok(s.name && s.daoTitle && s.sealText && s.image, `${id} 基础字段缺失`);
+  for (const field of ['term', 'source', 'quote', 'gloss', 'practice', 'url']) {
+    assert.ok(s.reading?.[field], `${id} 缺少原典导读字段 ${field}`);
+  }
+  assert.equal(SCALE_ITEMS.filter((item) => item.school === id).length, 2);
   assert.ok(s.quote && s.quoteAuthor && s.quoteModern, `${id} 名言字段缺失`);
   assert.ok(s.ancientStoryTitle && s.ancientStory, `${id} 古人故事字段缺失`);
   assert.ok(s.matchTrait && s.strength && s.shadow && s.actionNow, `${id} 导向字段缺失`);
@@ -137,4 +142,18 @@ for (let i = 0; i < 5000; i++) {
   assert.ok(COMBO_INSIGHTS[res.comboKey], `第 ${i} 次随机作答未命中组合键 ${res.comboKey}`);
 }
 
+console.log('5. 校验自省卷融合、同分与对照数据...');
+assert.equal(SCALE_ITEMS.length, 12);
+for (let i = 0; i < 5000; i++) {
+  const answers = QUESTIONS.map(() => Math.floor(Math.random() * 4));
+  const scaleAnswers = SCALE_ITEMS.map(() => i === 0 ? 2 : 1 + Math.floor(Math.random() * 4));
+  const result = Scoring.calculateResult(answers, QUESTIONS, SCHOOL_ORDER, { scaleAnswers, scaleItems: SCALE_ITEMS });
+  assert.equal(result.mode, 'full');
+  assert.equal(result.ranked.reduce((sum, row) => sum + row.percent, 0), 100);
+  assert.ok(COMBO_INSIGHTS[result.comboKey]);
+  for (const row of result.ranked) {
+    assert.ok(Math.abs(row.exactPercent - 100 * (0.6 * row.sjtShare + 0.4 * row.scaleShare)) < 1e-8);
+  }
+  if (i === 0) assert.equal(result.reliability.consistency, null);
+}
 console.log('全部校验均已通过！');

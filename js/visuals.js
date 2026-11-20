@@ -95,8 +95,7 @@
     var dataPoints = order.map(function (id, idx) {
       var stat = result.byId[id];
       var pct = stat ? stat.percent : 0;
-      // 保留最小可见半径(8%)防止 0% 时线条完全重合
-      var ratio = Math.max(0.08, Math.min(1, pct / scaleMax));
+      var ratio = pct / scaleMax;
       var pt = getPoint(idx, maxR * ratio);
       return {
         id: id,
@@ -465,9 +464,10 @@
     y += 58;
     ctx.fillStyle = '#1a1a1a';
     ctx.font = '700 42px ' + FONT_SERIF;
-    ctx.fillText('迷茫时候，看看古人是', W / 2, y);
+    ctx.fillText('迷茫时，问道于古人。', W / 2, y);
     y += 58;
-    ctx.fillText('怎么找到适合自己的道的？', W / 2, y);
+    ctx.font = '400 24px ' + FONT_SERIF;
+    ctx.fillText(result.mode === 'full' ? '三十问 · 情境与自省' : '十八问 · 日常情境', W / 2, y);
 
     // 3. 中央主卡片框
     y += 48;
@@ -490,7 +490,7 @@
     ctx.textAlign = 'left';
     ctx.fillStyle = '#a62c2b';
     ctx.font = '600 24px ' + FONT_SERIF;
-    ctx.fillText(result.isPure ? '你最契合的纯粹之道' : '你的主辅双道导向', innerX, innerY);
+    ctx.fillText(result.isPure ? '这次选择最集中的一家' : '这次选择居前的两家', innerX, innerY);
 
     innerY += 64;
     ctx.fillStyle = '#1a1a1a';
@@ -498,7 +498,7 @@
     var headlineText = result.isPure
       ? top1School.name + ' ' + result.top1.percent + '%'
       : top1School.name + ' ' + result.top1.percent + '% · ' + top2School.name + ' ' + result.top2.percent + '%';
-    ctx.fillText(headlineText, innerX, innerY);
+    ctx.fillText(headlineText, innerX, innerY, contentWidth - 194);
 
     // 雅号标签
     innerY += 46;
@@ -517,6 +517,13 @@
     var verdictLines = wrapCanvasText(ctx, insight.verdict, contentWidth - 88);
     verdictLines.slice(0, 5).forEach(function (line, idx) {
       ctx.fillText(line, innerX, innerY + idx * 42);
+    });
+
+    var adviceY = innerY + verdictLines.length * 42 + 24;
+    ctx.fillStyle = '#655f54';
+    ctx.font = '400 23px ' + FONT_SERIF;
+    wrapCanvasText(ctx, '试一试 · ' + insight.balanceAdvice, contentWidth - 88).slice(0, 2).forEach(function (line, idx) {
+      ctx.fillText(line, innerX, adviceY + idx * 34);
     });
 
     // 4. 六家百分比水墨分布条形图
@@ -551,7 +558,7 @@
       fillRoundRect(ctx, barStartX, rowY - 10, barMaxW, 20, 10);
 
       // 水墨墨迹进度条
-      var ratio = Math.max(0.03, item.percent / Math.max(55, result.top1.percent + 8));
+      var ratio = item.percent / 100;
       var fillW = Math.round(barMaxW * Math.min(1, ratio));
       var barGrad = ctx.createLinearGradient(barStartX, 0, barStartX + fillW, 0);
       if (idx === 0) {
@@ -566,7 +573,7 @@
         barGrad.addColorStop(1, '#9c968a');
       }
       ctx.fillStyle = barGrad;
-      fillRoundRect(ctx, barStartX, rowY - 10, fillW, 20, 10);
+      if (fillW > 0) fillRoundRect(ctx, barStartX, rowY - 10, fillW, 20, 10);
 
       // 右侧百分比数值
       ctx.textAlign = 'right';
@@ -591,7 +598,8 @@
     ctx.textAlign = 'left';
     ctx.fillStyle = '#1a1a1a';
     ctx.font = '600 26px ' + FONT_SERIF;
-    var qLines = wrapCanvasText(ctx, '“' + top1School.quote + '”', contentWidth - 64);
+    var reading = top1School.reading;
+    var qLines = wrapCanvasText(ctx, '“' + reading.quote + '”', contentWidth - 64);
     qLines.slice(0, 2).forEach(function (line, i) {
       ctx.fillText(line, qX, qY + i * 38);
     });
@@ -599,12 +607,12 @@
     qY += Math.min(2, qLines.length) * 38 + 6;
     ctx.fillStyle = '#6b6862';
     ctx.font = '400 21px ' + FONT_SERIF;
-    ctx.fillText('—— ' + top1School.quoteAuthor, qX, qY);
+    ctx.fillText('—— ' + reading.source, qX, qY);
 
     qY += 38;
     ctx.fillStyle = '#383632';
     ctx.font = '400 22px ' + FONT_SERIF;
-    var modLines = wrapCanvasText(ctx, '古今镜像：' + top1School.quoteModern, contentWidth - 64);
+    var modLines = wrapCanvasText(ctx, reading.gloss, contentWidth - 64);
     modLines.slice(0, 2).forEach(function (line, i) {
       ctx.fillText(line, qX, qY + i * 33);
     });
@@ -627,12 +635,12 @@
     ctx.textAlign = 'left';
     ctx.fillStyle = '#a62c2b';
     ctx.font = '700 22px ' + FONT_SERIF;
-    ctx.fillText('今日破局指引 · 抉择校准', gX, gY);
+    ctx.fillText('今天试一件小事', gX, gY);
 
     gY += 38;
     ctx.fillStyle = '#1a1a1a';
     ctx.font = '400 22px ' + FONT_SERIF;
-    var todayText = top1School.roadmap && top1School.roadmap.today ? top1School.roadmap.today : top1School.actionNow;
+    var todayText = top1School.actionNow;
     var todayLines = wrapCanvasText(ctx, todayText, contentWidth - 64);
     todayLines.slice(0, 2).forEach(function (line, i) {
       ctx.fillText(line, gX, gY + i * 33);

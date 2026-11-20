@@ -4,66 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>迷茫时候看看古人是怎么找到适合自己的道的？｜诸子百家心性镜像测试</title>
-  <meta name="description" content="十八道红尘情境问心，融合先秦原典映照，照见你与儒、道、法、墨、兵、纵横诸子百家的契合占比，并给出分场景迷茫破局指引。">
-
-  <!-- 非阻塞异步加载思源宋体与马善政楷书，无网环境无缝降级至本地宋体栈 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600;700&display=swap">
-  </noscript>
+  <meta name="description" content="用十八个日常选择读懂与你相近的先秦思想。可加做十二问自省卷，翻阅六家原典与生活示例，生成自己的水墨签文。">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/folio.css">
 </head>
 <body>
   <div class="app-shell">
 
     <!-- ==================== 1. 首屏问道卷 ==================== -->
     <section id="view-home" class="view-panel view-active hero-section" aria-label="卷首介绍">
-      <div class="hero-bg-layer" aria-hidden="true">
-        <img class="hero-bg-img" src="assets/images/hero-ink-mountains.jpg" alt="水墨远山孤舟背景">
-      </div>
-
-      <main class="hero-inner">
-        <div class="hero-top-meta">
-          <span class="hero-seal-vertical" aria-hidden="true">寻道</span>
-          <span class="hero-kicker">文学历史镜像链接 · 诸子百家问心录</span>
+      <header class="masthead page-width">
+        <div class="wordmark"><span class="brand-seal" aria-hidden="true">問</span>诸子问道</div>
+        <nav aria-label="卷首导航"><a href="#school-shelf">六家图鉴</a><button type="button" id="btn-open-method">问卷说明</button></nav>
+      </header>
+      <main>
+        <div class="landscape">
+          <div class="mountain-art" aria-hidden="true"></div>
+          <div class="page-width landscape-inner">
+            <div class="cover-copy">
+              <p class="cover-kicker">诸子百家 · 问心卷</p>
+              <h1 class="cover-title">迷茫时，<br>问道于古人<span>。</span></h1>
+              <p class="cover-intro">当计划落空、人情两难，你会先做什么？<br>从十八个日常选择，读懂与你相近的先秦思想。</p>
+              <div class="mode-cards" role="group" aria-label="选择答题模式">
+                <button type="button" class="mode-card mode-primary" data-mode="quick"><strong>开始问道</strong><span>18 问 · 约 3 分钟</span></button>
+                <button type="button" class="mode-card" data-mode="full"><strong>加做自省卷</strong><span>30 问 · 约 6 分钟</span></button>
+              </div>
+              <button type="button" id="btn-resume" class="btn-resume" hidden></button>
+            </div>
+            <aside class="margin-verse" aria-label="《老子》第三十三章"><span>知人者智，自知者明。</span><small>老子 · 三十三章</small></aside>
+          </div>
         </div>
-
-        <h1 class="hero-title">迷茫时候看看古人是怎么找到适合自己的道的？</h1>
-
-        <p class="hero-subtitle">
-          春秋战国亦是一个礼崩乐坏、前路莫测的时代。孔子的忧思、庄子的逍遥、韩非的冷峻、墨子的奔走、孙膑的隐忍与苏秦的纵横，本质上都是先贤面对人生迷茫开出的不同解方。<br>
-          十八道明确的情境抉择与古籍映照，为你算出最贴近本心的百家道途占比与落地破局指引。
-        </p>
-
-        <div class="hero-schools-row" id="hero-schools-row" aria-label="六大流派快览">
-          <button type="button" class="school-pill" data-codex-tab="ru"><span class="school-pill-char">儒</span>儒家</button>
-          <button type="button" class="school-pill" data-codex-tab="dao"><span class="school-pill-char">道</span>道家</button>
-          <button type="button" class="school-pill" data-codex-tab="fa"><span class="school-pill-char">法</span>法家</button>
-          <button type="button" class="school-pill" data-codex-tab="mo"><span class="school-pill-char">墨</span>墨家</button>
-          <button type="button" class="school-pill" data-codex-tab="bing"><span class="school-pill-char">兵</span>兵家</button>
-          <button type="button" class="school-pill" data-codex-tab="zong"><span class="school-pill-char">纵</span>纵横家</button>
-        </div>
-
-        <div class="hero-actions">
-          <button type="button" id="btn-start-quiz" class="btn btn-primary">展卷问心 · 开始测试</button>
-          <button type="button" id="btn-open-codex-home" class="btn btn-secondary">先览诸子百家录</button>
-        </div>
+        <section id="school-shelf" class="shelf page-width" aria-labelledby="shelf-title">
+          <header class="shelf-head"><div><h2 id="shelf-title">六家图鉴</h2><p>同一件难事，换一家看看。</p></div><button type="button" id="btn-open-codex-home" class="text-link">翻阅典籍</button></header>
+          <div id="hero-schools-row" class="school-shelf"></div>
+        </section>
       </main>
-
-      <footer class="hero-footer-note">
-        十八道红尘情境问心 · 先秦原典映照 · 测出你的六家道途占比与破局指引
-      </footer>
+      <footer class="folio-footer page-width">诸子问道<span>先秦思想与日常选择</span></footer>
     </section>
 
     <!-- ==================== 2. 18 题问心卷 ==================== -->
-    <section id="view-quiz" class="view-panel" aria-label="心理测试答题区">
+    <section id="view-quiz" class="view-panel" aria-label="问心卷答题区">
       <div class="quiz-wrapper">
         <div class="quiz-topbar">
           <button type="button" id="btn-home" class="btn btn-ghost">← 返回卷首</button>
-          <span id="quiz-progress-text" class="quiz-progress-text">第 壹 / 拾捌 问</span>
+          <span id="quiz-progress-text" class="quiz-progress-text">第 壹 / 叁拾 问</span>
         </div>
 
         <div class="ink-progress-track" aria-hidden="true">
@@ -73,14 +58,16 @@
         <article class="quiz-card">
           <img class="quiz-card-brush ink-blend" src="assets/images/ink-divider-brush.svg" alt="" aria-hidden="true">
           <div id="quiz-chapter" class="quiz-chapter">第一问</div>
-          <p id="quiz-epigraph" class="quiz-epigraph"></p>
-          <h2 id="quiz-scenario" class="quiz-scenario"></h2>
-          <div id="quiz-options" class="options-list" role="radiogroup" aria-label="情境选项"></div>
 
+          <h2 id="quiz-scenario" class="quiz-scenario" tabindex="-1"></h2>
+          <div id="quiz-options" class="options-list" role="group" aria-label="选择答案"></div>
+
+          <details class="quiz-margin" id="quiz-margin"><summary>读一句题边古文</summary><p id="quiz-epigraph" class="quiz-epigraph"></p></details>
           <div class="quiz-bottom-bar">
             <button type="button" id="btn-prev" class="btn btn-ghost">← 上一问</button>
-            <span class="quiz-hint">凭第一直觉择你真实会走的步子</span>
+            <span id="quiz-hint" class="quiz-hint">凭第一直觉，选你真实会走的那一步</span>
           </div>
+          <p class="quiz-kbd-hint" aria-hidden="true">数字键 1–4 作答，← 返回上一问</p>
         </article>
       </div>
     </section>
@@ -98,8 +85,8 @@
     <section id="view-result" class="view-panel" aria-label="测试结果报告">
       <div class="result-wrapper">
         <header class="result-page-header">
-          <span class="hero-kicker">诸子百家心性镜像签 · 照见己道</span>
-          <h1 class="result-page-title">迷茫时候看看古人是怎么找到适合自己的道的？</h1>
+          <span class="hero-kicker">诸子问道 · 结果卷</span>
+          <h1 class="result-page-title">我的问道手记</h1>
         </header>
 
         <!-- 卷首画像卡 -->
@@ -121,6 +108,33 @@
           </div>
         </article>
 
+        <nav class="report-index" aria-label="结果目录">
+          <a href="#res-reliability-card">看分数</a><a href="#result-classics">读原典</a>
+          <a href="#result-scenes">找场景</a><a href="#result-practice">试一步</a>
+          <a href="#result-share">保存签文</a>
+        </nav>
+        <article class="ink-card reliability-card" id="res-reliability-card">
+          <div class="section-heading-row">
+            <h3 class="section-heading">这次选择怎么读？</h3>
+            <span id="res-rel-mode" class="section-subheading"></span>
+          </div>
+          <div class="reliability-grid">
+            <div class="rel-item">
+              <div class="rel-label">情境 × 自评一致性</div>
+              <div class="rel-value" id="res-rel-consistency">—</div>
+              <div class="rel-meter"><div class="rel-meter-fill" id="res-rel-consistency-bar"></div></div>
+              <div class="rel-sub" id="res-rel-consistency-sub"></div>
+            </div>
+            <div class="rel-item">
+              <div class="rel-label">前两家得分差</div>
+              <div class="rel-value" id="res-rel-clarity">—</div>
+              <div class="rel-meter"><div class="rel-meter-fill" id="res-rel-clarity-bar"></div></div>
+              <div class="rel-sub" id="res-rel-clarity-sub"></div>
+            </div>
+          </div>
+          <p class="rel-note" id="res-rel-note"></p>
+        </article>
+
         <!-- 六家道途占比区 -->
         <article class="ink-card">
           <div class="section-heading-row">
@@ -134,12 +148,13 @@
             </div>
             <div id="res-bars-container" class="bars-list"></div>
           </div>
+          <details class="evidence"><summary>哪几次选择给主道加了分？</summary><ul id="answer-evidence"></ul></details>
         </article>
 
-        <!-- 古人也曾迷茫 · 历史镜像与原典精读卡 -->
-        <article class="ink-card">
+        <!-- 故事与原典导读 -->
+        <article class="ink-card" id="result-classics">
           <div class="section-heading-row">
-            <h3 class="section-heading">古人也曾迷茫 · 历史镜像与原典精读</h3>
+            <h3 class="section-heading">从一段原典读起</h3>
             <span id="res-story-rep" class="section-subheading"></span>
           </div>
           <h4 id="res-story-title" class="story-title"></h4>
@@ -150,9 +165,10 @@
             <p id="res-quote-modern" class="quote-modern"></p>
           </blockquote>
 
+          <div id="res-reading"></div>
           <div class="classics-block">
             <div class="subsection-title-row">
-              <h4 class="subsection-title">本命与调和原典摘录</h4>
+              <h4 class="subsection-title">延伸阅读</h4>
               <span class="subsection-hint">主辅互参，照见古籍深意</span>
             </div>
             <div id="res-classics-list" class="classics-grid"></div>
@@ -167,7 +183,7 @@
         </article>
 
         <!-- 分场景破局指引卡 -->
-        <article class="ink-card">
+        <article class="ink-card" id="result-scenes">
           <div class="section-heading-row">
             <h3 class="section-heading">分场景迷茫破局指引</h3>
             <span id="res-scene-subtitle" class="section-subheading">把先秦思维放回当下现实难题</span>
@@ -176,26 +192,26 @@
         </article>
 
         <!-- 迷茫破局行动蓝图卡 -->
-        <article class="ink-card">
+        <article class="ink-card" id="result-practice">
           <div class="section-heading-row">
-            <h3 class="section-heading">寻道破局行动蓝图</h3>
-            <span class="section-subheading">知天赋边界，定今日至一月之步履</span>
+            <h3 class="section-heading">把想法带回生活</h3>
+            <span class="section-subheading">从今天可以试的一步开始</span>
           </div>
           <div class="advice-grid">
             <div class="advice-box">
-              <h4 class="advice-label"><span class="advice-dot"></span>你的天赋支点</h4>
+              <h4 class="advice-label"><span class="advice-dot"></span>可以借力的习惯</h4>
               <p id="res-strength"></p>
             </div>
             <div class="advice-box">
-              <h4 class="advice-label"><span class="advice-dot"></span>以辅调主 · 内在平衡</h4>
+              <h4 class="advice-label"><span class="advice-dot"></span>换个角度再想想</h4>
               <p id="res-balance"></p>
             </div>
             <div class="advice-box">
-              <h4 class="advice-label"><span class="advice-dot"></span>警惕的执念阴影</h4>
+              <h4 class="advice-label"><span class="advice-dot"></span>容易忽略的地方</h4>
               <p id="res-shadow"></p>
             </div>
             <div class="advice-box advice-action">
-              <h4 class="advice-label"><span class="advice-dot"></span>此刻破冰切口</h4>
+              <h4 class="advice-label"><span class="advice-dot"></span>今天试一件小事</h4>
               <p id="res-action"></p>
             </div>
           </div>
@@ -212,12 +228,17 @@
         </article>
 
         <!-- 底部流转操作区 -->
-        <div class="result-actions-bar">
+        <div id="result-share" class="result-actions-bar">
           <button type="button" id="btn-gen-poster" class="btn btn-primary">生成水墨签文长图</button>
           <button type="button" id="btn-copy-result" class="btn btn-secondary">复制测试结果文案</button>
           <button type="button" id="btn-open-codex-result" class="btn btn-secondary">浏览诸子百家典籍</button>
           <button type="button" id="btn-restart" class="btn btn-ghost">重整心绪 · 再测一次</button>
         </div>
+
+        <p class="disclaimer">
+          本测试基于先秦诸子思想的文化解读与情境判断设计，结果供文化阅读与自我探索，不构成任何心理诊断或职业、投资建议。
+          <button type="button" class="link-btn" data-open-method>了解测评方法</button>
+        </p>
       </div>
     </section>
 
@@ -227,12 +248,12 @@
   <div id="modal-codex" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="codex-modal-title">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3 id="codex-modal-title" class="modal-title">诸子百家典籍录 · 先贤寻道十家</h3>
+        <h3 id="codex-modal-title" class="modal-title">诸子百家典籍录 · 六家导读与四家旁读</h3>
         <button type="button" class="modal-close" data-close-modal="modal-codex" aria-label="关闭典籍弹窗">&times;</button>
       </div>
       <div class="modal-body">
         <div id="codex-tabs" class="codex-tabs" role="tablist"></div>
-        <div id="codex-content"></div>
+        <div id="codex-content" role="tabpanel"></div>
       </div>
     </div>
   </div>
@@ -246,10 +267,29 @@
       </div>
       <div class="modal-body">
         <div class="poster-preview-wrap">
-          <img id="poster-preview-img" class="poster-preview-img" src="" alt="诸子百家水墨签文长图预览">
+          <img id="poster-preview-img" class="poster-preview-img" alt="诸子百家水墨签文长图预览">
           <p class="poster-tip">1080 × 1920 高清竖版签文图，手机端亦可长按图片保存</p>
           <a id="btn-download-poster" class="btn btn-primary" href="#" download="诸子百家心性镜像签.png">保存高清签文图片 (.png)</a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 弹窗 3：问卷怎么计分 ==================== -->
+  <div id="modal-method" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="method-modal-title">
+    <div class="modal-dialog modal-dialog-narrow">
+      <div class="modal-header">
+        <h3 id="method-modal-title" class="modal-title">问卷怎么计分</h3>
+        <button type="button" class="modal-close" data-close-modal="modal-method" aria-label="关闭说明弹窗">&times;</button>
+      </div>
+      <div class="modal-body method-body">
+        <h4>两种答法</h4>
+        <p>快测共 18 问，每题选四种做法中你最可能先做的一种。加做自省卷会在同样的情境题后多出 12 句自述，请按平日的表现选档。</p>
+        <h4>百分比从哪里来？</h4>
+        <p>每个情境选项为两家分别记 3 分和 1 分。72 个选项里，每家各有 12 次主倾向、12 次次倾向。加做自省卷时，两卷各自换算成占比，再按情境六成、自评四成合并。</p>
+        <p>六项取整后，剩余百分点依次分给小数余数最大的项，总和为 100%。占比描述你这次选择的分布。</p>
+        <h4>两家很接近时，先读哪一家？</h4>
+        <p>可以一起读。哪一种解释更贴近最近的一件事？加做自省卷后，还能对照你在情境中的选择与平日自我描述的排序。这是一份文化阅读问卷，没有心理测验常模。</p>
       </div>
     </div>
   </div>
@@ -260,6 +300,7 @@
   <!-- 按严格依赖顺序以普通脚本挂载至 window.DaoTest，兼容 file:// 与 HTTP -->
   <script defer src="js/data-schools.js"></script>
   <script defer src="js/data-questions.js"></script>
+  <script defer src="js/data-scale.js"></script>
   <script defer src="js/scoring.js"></script>
   <script defer src="js/visuals.js"></script>
   <script defer src="js/app.js"></script>
